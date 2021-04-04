@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.testlove.database.mapper.UserMapper">
+<!--    <parameterMap id="UserDO" type="cn.testlove.database.entity.UserDO">-->
+<!--        <parameter property="username" javaType="java.lang.String" >-->
+
+<!--        </parameter>-->
+<!--    </parameterMap>-->
+    <insert id="insertUser" parameterType="cn.testlove.database.entity.UserDO" >
+insert into user(username, password, roleId)
+values (#{username},#{password},#{roleId})
+    </insert>
+    <select id="selectOneUserByUserName" parameterType="java.lang.String" resultType="cn.testlove.database.entity.UserDO">
+        select * from user
+        where username = #{username}
+    </select>
+    <select id="selectOneUserById" parameterType="java.lang.Integer" resultType="cn.testlove.database.entity.UserDO">
+        select * from user
+        where userId = #{userId}
+    </select>
+</mapper>
