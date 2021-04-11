@@ -6,4 +6,13 @@
         select roleName from role
         where roleId = #{roleId}
     </select>
+    <select id="selectAllAuthorities" resultType="java.lang.String">
+        select access from role
+    </select>
+    <select id="selectRoleInfoByAccess" parameterType="java.lang.String" resultType="cn.testlove.database.entity.RoleDO">
+        select * from role where access=#{access}
+    </select>
+    <select id="selectRoleNameByAccess" parameterType="java.lang.String" resultType="java.lang.String">
+        select roleName from role where access=#{access}
+    </select>
 </mapper>

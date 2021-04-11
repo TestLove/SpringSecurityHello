@@ -18,4 +18,5 @@ values (#{username},#{password},#{roleId})
         select * from user
         where userId = #{userId}
     </select>
+
 </mapper>

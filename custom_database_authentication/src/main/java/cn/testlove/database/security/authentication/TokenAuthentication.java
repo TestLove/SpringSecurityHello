@@ -1,13 +1,17 @@
 package cn.testlove.database.security.authentication;
 
 import cn.testlove.database.entity.TokenModel;
+import cn.testlove.database.mapper.RoleMapper;
+import cn.testlove.database.util.SpringBeanUtils;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Collection;
+import java.util.*;
 
 /**
  * @author admin
@@ -17,6 +21,8 @@ import java.util.Collection;
 @Setter
 public class TokenAuthentication extends AbstractAuthenticationToken implements Authentication {
     private TokenModel tokenModel;
+//    @Autowired
+    RoleMapper roleMapper;
 
     /**
      * Creates a token with the supplied array of authorities.
@@ -43,7 +49,14 @@ public class TokenAuthentication extends AbstractAuthenticationToken implements 
      */
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return super.getAuthorities();
+        roleMapper = (RoleMapper) SpringBeanUtils.getBean("roleMapper");
+        System.out.println("roleMapper"+roleMapper);
+        System.out.println("this.tokenModel"+this.tokenModel);
+        System.out.println("super.getAuthorities()"+super.getAuthorities());
+        System.out.println("roleMapper.selectRoleNameByRoleId(tokenModel.getRoleId())"+roleMapper.selectRoleNameByRoleId(tokenModel.getRoleId()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(roleMapper.selectRoleNameByRoleId(tokenModel.getRoleId())));
+        return authorities;
     }
 
     /**

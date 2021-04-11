@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-//@Component
+/**
+ * @author admin
+ */
 public class TokenFilter extends OncePerRequestFilter {
 
 
@@ -23,10 +25,13 @@ public class TokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         Optional<String> tokenOptional = Optional.ofNullable(request.getHeader("token")) ;
         SecurityContext context = SecurityContextHolder.getContext();
-//        TokenAuthentication auth = new TokenAuthentication(new ArrayList<SimpleGrantedAuthority>(Collections.singleton(new SimpleGrantedAuthority("hh"))));
-        TokenAuthentication auth = new TokenAuthentication(null);
         TokenModel tokenModel = new TokenModel(tokenOptional.get());
         JwtUtils.resolveToken(tokenModel);
+        if (tokenModel.isTokenExpired()) {
+            System.out.println("token 已经过期或者无效");
+            return;
+        }
+        TokenAuthentication auth = new TokenAuthentication(null);
         auth.setTokenModel(tokenModel);
         context.setAuthentication(auth);
         if (context.getAuthentication() != null && context.getAuthentication().isAuthenticated()) {

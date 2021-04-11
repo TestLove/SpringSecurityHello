@@ -2,6 +2,7 @@ package cn.testlove.database.security.authentication;
 
 import cn.testlove.database.entity.TokenModel;
 import cn.testlove.database.security.authentication.TokenAuthentication;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
+@Slf4j
 public class TokenAuthenticationProvider implements   AuthenticationProvider {
 
 
@@ -37,7 +39,7 @@ public class TokenAuthenticationProvider implements   AuthenticationProvider {
         System.out.println("authentication.getCredentials() "+authentication.getCredentials());
         TokenModel model = ((TokenAuthentication) authentication).getTokenModel();
         if(model.isTokenExpired()){
-            System.out.println("111111111111111111");
+            log.info("token过期或者不存在");
             throw new BadCredentialsException("the token is Expired");
         }else if (!model.isTokenExists()){
             System.out.println("22222222222222222222222");
